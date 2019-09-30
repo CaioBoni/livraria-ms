@@ -1,12 +1,24 @@
 package br.com.livraria.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Livro {
 	
 	private Long id;
 	private String nome;
 	private String comentarios;
-
+	
 	public Livro() {
+		super();
+	}
+	
+	public Livro(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public Livro(boolean completo) {
 		super();
 		this.id = 1l;
 		this.nome = "Arquitetura";
@@ -40,6 +52,16 @@ public class Livro {
 		this.comentarios = comentarios;
 	}
 	
-	
+	public static List<Livro> criarMock() {
+		List<Livro> mock = new ArrayList<>();
+		for (int i=0; i<=10; i++) {
+			Livro livro = new Livro();
+			livro.setId(Long.valueOf(i));
+			livro.setNome("Arquitetura".concat("("+i+")"));
+			livro.setComentarios("Livro " + i + " depois do " + (i-1));
+			mock.add(livro);
+		}
+		return mock;
+	}
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +27,11 @@ public class LivroController {
 	@Autowired LivroService livroService;
 	@Autowired ValidadorTokenService validadorTokenService;
 	
+	MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+	
 	@GetMapping(value = "/livros", produces = "application/json")
-	public ResponseEntity<List<Livro>> buscarLivros(@RequestBody Livro livro) {
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		if (validadorTokenService.validarToken()) {
+	public ResponseEntity<List<Livro>> buscarLivros(@RequestBody Livro livro, @RequestHeader String token) {
+		if (validadorTokenService.validarToken(token)) {
 			headers.set("mensagem", "Retornado com sucesso");
 			return new ResponseEntity<>(livroService.buscarLivros(livro), headers, HttpStatus.OK);
 		}
@@ -53,16 +55,16 @@ public class LivroController {
 	}
 	
 	@PostMapping(value = "/livros/audit", produces = "application/json")
-	public ResponseEntity<?> cadastrarLivros(@RequestBody Livro livro) {
-		if (validadorTokenService.validarToken()) {
+	public ResponseEntity<?> cadastrarLivros(@RequestBody Livro livro, @RequestHeader String token) {
+		if (validadorTokenService.validarToken(token)) {
 			return new ResponseEntity<>(livroService.registrarAuditoria(livro), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
 	@PostMapping(value = "/livros/carrinho", produces = "application/json")
-	public ResponseEntity<?> registrarPagamento(@RequestBody Carrinho carrinho) {
-		if (validadorTokenService.validarToken()) {
+	public ResponseEntity<?> registrarPagamento(@RequestBody Carrinho carrinho, @RequestHeader String token) {
+		if (validadorTokenService.validarToken(token)) {
 			return new ResponseEntity<>(livroService.registrarPagamento(carrinho), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);

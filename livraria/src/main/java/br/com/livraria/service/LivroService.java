@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.livraria.entity.Carrinho;
@@ -19,8 +18,13 @@ public class LivroService {
 	@Value("${url.auditoria}") String urlAuditoria;
 	@Value("${url.credit.card}") String urlCreditCard;
 	
-	public List<Livro> buscarLivros(@RequestBody Livro livro) {
-		return null;
+	public List<Livro> buscarLivros(Livro livro) {
+		List<Livro> mock = Livro.criarMock();
+		return mock.parallelStream()
+				.filter(obj -> obj.getId().equals(livro.getId() != null ? livro.getId() : obj.getId()))
+				.filter(obj -> obj.getNome().contains(livro.getNome() != null ? livro.getNome() : obj.getNome()))
+				.filter(obj -> obj.getComentarios().contains(livro.getComentarios() != null ? livro.getComentarios() : obj.getComentarios()))
+				.collect(Collectors.toList());
 	}
 	
 	public List<Livro> gravarLivros(List<Livro> livros) {

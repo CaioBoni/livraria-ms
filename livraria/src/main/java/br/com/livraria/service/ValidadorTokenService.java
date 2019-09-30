@@ -1,21 +1,31 @@
 package br.com.livraria.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ValidadorTokenService {
 	
-	@Value("${url.auth}") String urlAuth;
+	@Value("${url.token}") String urlAuthToken;
 	
-	public Boolean validarToken() {
-		RestTemplate template = new RestTemplate();
-		Object response;
+	public Boolean validarToken(String token) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Boolean> response;
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("token", token);
+
+		HttpEntity<?> entity = new HttpEntity<Object>(headers);
+
 		try {
-			response = template.getForObject(urlAuth, Object.class);
+			response = restTemplate.exchange(urlAuthToken, HttpMethod.GET, entity, Boolean.class);
 		}catch (Exception e) {
-			return true;
+			return false;
 		}
 		return response!=null ? true : false;
 	}
