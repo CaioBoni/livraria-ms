@@ -21,7 +21,7 @@ public class AutenticacaoController {
 		return new ResponseEntity<>(valido, valido ? HttpStatus.OK : HttpStatus.UNAUTHORIZED);
 	}
 	
-	@GetMapping(value="/usuario-senha", produces = "application/json")
+	@GetMapping(value="/login", produces = "application/json")
 	public ResponseEntity<?> validarUsuarioSenha(@RequestParam String user, @RequestParam String pwd) {
 		boolean valido = user.equals(usuarioValido) && pwd.equals(passwordValido);
 		return new ResponseEntity<>(valido, valido ? HttpStatus.OK : HttpStatus.UNAUTHORIZED);

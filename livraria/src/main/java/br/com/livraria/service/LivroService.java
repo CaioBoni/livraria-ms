@@ -16,7 +16,7 @@ import br.com.livraria.entity.Livro;
 public class LivroService {
 	
 	@Value("${url.auditoria}") String urlAuditoria;
-	@Value("${url.credit.card}") String urlCreditCard;
+	@Value("${url.cartao}") String urlCreditCard;
 	
 	public List<Livro> buscarLivros(Livro livro) {
 		List<Livro> mock = Livro.criarMock();

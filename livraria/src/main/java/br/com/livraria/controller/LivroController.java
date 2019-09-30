@@ -27,33 +27,33 @@ public class LivroController {
 	@Autowired LivroService livroService;
 	@Autowired ValidadorTokenService validadorTokenService;
 	
-	MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-	
 	@GetMapping(value = "/livros", produces = "application/json")
 	public ResponseEntity<List<Livro>> buscarLivros(@RequestBody Livro livro, @RequestHeader String token) {
 		if (validadorTokenService.validarToken(token)) {
-			headers.set("mensagem", "Retornado com sucesso");
-			return new ResponseEntity<>(livroService.buscarLivros(livro), headers, HttpStatus.OK);
+			return new ResponseEntity<>(livroService.buscarLivros(livro), header("Retornado com sucesso"), HttpStatus.OK);
 		}
-		headers.set("mensagem", "Não autorizado");
-		return new ResponseEntity<>(headers, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
 
+	//TODO - verificar
 	@PostMapping(value = "/livros", produces = "application/json")
 	public List<Livro> cadastrarLivros(@RequestBody List<Livro> livros) {
 		return livroService.gravarLivros(livros);
 	}
 	
+	//TODO - verificar
 	@PutMapping(value = "/livros", produces = "application/json")
 	public List<Livro> atualizarLivros(@RequestBody List<Livro> livros) {
 		return livroService.gravarLivros(livros);
 	}
 	
+	//TODO - verificar
 	@DeleteMapping(value = "/livros/{id}", produces = "application/json")
 	public Livro deletarLivro(@RequestParam Long id) {
 		return livroService.deletarLivro(id);
 	}
 	
+	//TODO - verificar
 	@PostMapping(value = "/livros/audit", produces = "application/json")
 	public ResponseEntity<?> cadastrarLivros(@RequestBody Livro livro, @RequestHeader String token) {
 		if (validadorTokenService.validarToken(token)) {
@@ -62,11 +62,18 @@ public class LivroController {
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 	}
 	
+	//TODO - verificar
 	@PostMapping(value = "/livros/carrinho", produces = "application/json")
 	public ResponseEntity<?> registrarPagamento(@RequestBody Carrinho carrinho, @RequestHeader String token) {
 		if (validadorTokenService.validarToken(token)) {
 			return new ResponseEntity<>(livroService.registrarPagamento(carrinho), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+	}
+	
+	private MultiValueMap<String, String> header(String msg) {
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.set("mensagem", msg);
+		return headers;
 	}
 }

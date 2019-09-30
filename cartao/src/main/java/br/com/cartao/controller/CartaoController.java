@@ -1,6 +1,7 @@
 package br.com.cartao.controller;
 
 import java.util.Date;
+import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class CartaoController {
 	@PostMapping(value="/entrada", produces = "application/json")
     public ResponseEntity<?> gravarEntrada(@RequestBody Object object) {
     	Cartao cartao = new Cartao();
+    	cartao.setId((new Random()).nextLong());
     	cartao.setOperacao(Cartao.OperacaoCartao.ENTRADA);
     	cartao.setData((new Date()));
     	return new ResponseEntity<>(cartao, HttpStatus.OK);
@@ -25,6 +27,7 @@ public class CartaoController {
 	@PostMapping(value="/saida", produces = "application/json")
     public ResponseEntity<?> saidaEntrada(@RequestBody Object object) {
     	Cartao cartao = new Cartao();
+    	cartao.setId((new Random()).nextLong());
     	cartao.setOperacao(Cartao.OperacaoCartao.SAIDA);
     	cartao.setData((new Date()));
     	return new ResponseEntity<>(cartao, HttpStatus.OK);
