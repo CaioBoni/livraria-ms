@@ -1,0 +1,14 @@
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.csprojAssemblyReference.cache
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.csproj.CoreCompileInputs.cache
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.RazorAssemblyInfo.cache
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.RazorAssemblyInfo.cs
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.AssemblyInfoInputs.cache
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.AssemblyInfo.cs
+/home/devdevil/microservicos/auth/bin/Debug/netcoreapp2.2/auth.deps.json
+/home/devdevil/microservicos/auth/bin/Debug/netcoreapp2.2/auth.runtimeconfig.json
+/home/devdevil/microservicos/auth/bin/Debug/netcoreapp2.2/auth.runtimeconfig.dev.json
+/home/devdevil/microservicos/auth/bin/Debug/netcoreapp2.2/auth.dll
+/home/devdevil/microservicos/auth/bin/Debug/netcoreapp2.2/auth.pdb
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.RazorTargetAssemblyInfo.cache
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.dll
+/home/devdevil/microservicos/auth/obj/Debug/netcoreapp2.2/auth.pdb

@@ -1,0 +1,15 @@
+Livraria
+
+Autenticacao
+POST [source]/api/auth
+GET  [source]/api/auth/{token}
+
+Auditoria
+GET  [source]/api/shopping/{id}
+POST [source]/api/shopping
+PUT  [source]/api/shopping
+
+Transacao Cartao de Credito
+GET    [source]/api/transaction/{id}
+POST   [source]/api/transaction
+DELETE [source]/api/transaction/{id}
