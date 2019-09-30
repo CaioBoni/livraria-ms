@@ -1,5 +1,6 @@
 package br.com.livraria.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +28,18 @@ public class LivroService {
 				.collect(Collectors.toList());
 	}
 	
-	public List<Livro> gravarLivros(List<Livro> livros) {
- 		return livros.parallelStream()
-				.map(l -> { return save(l); } )
+	public List<Livro> gravarLivros(Livro[] livros) {
+ 		return Arrays.asList(livros).parallelStream()
+				.map(livroEach -> { return save(livroEach); } )
 				.collect(Collectors.toList());
 	}
 	
+	public Livro gravarLivro(Livro livro) {
+ 		return save(livro);
+	}
+	
 	private Livro save(Livro livro) {
-		return new Livro();
+		return new Livro(livro);
 	}
 	
 	public Livro deletarLivro(Long id) {

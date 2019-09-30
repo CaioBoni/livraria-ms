@@ -9,11 +9,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.livraria.entity.Carrinho;
@@ -28,28 +29,37 @@ public class LivroController {
 	@Autowired ValidadorTokenService validadorTokenService;
 	
 	@GetMapping(value = "/livros", produces = "application/json")
-	public ResponseEntity<List<Livro>> buscarLivros(@RequestBody Livro livro, @RequestHeader String token) {
+	public @ResponseBody ResponseEntity<List<Livro>> buscarLivros(@RequestBody(required = false) Livro livro, 
+			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		if (validadorTokenService.validarToken(token)) {
+			return new ResponseEntity<>(livroService.buscarLivros(livro != null ? livro : new Livro()), header("Retornado com sucesso"), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
+	}
+	
+	@GetMapping(value = "/livros/{id}", produces = "application/json")
+	public @ResponseBody ResponseEntity<List<Livro>> buscarLivro(@PathVariable Long id, 
+			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
+		if (validadorTokenService.validarToken(token)) {
+			Livro livro = new Livro(id);
 			return new ResponseEntity<>(livroService.buscarLivros(livro), header("Retornado com sucesso"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
 
-	//TODO - verificar
 	@PostMapping(value = "/livros", produces = "application/json")
-	public List<Livro> cadastrarLivros(@RequestBody List<Livro> livros) {
+	public @ResponseBody List<Livro> cadastrarLivros(@RequestBody Livro ...livros) {
 		return livroService.gravarLivros(livros);
 	}
-	
-	//TODO - verificar
-	@PutMapping(value = "/livros", produces = "application/json")
-	public List<Livro> atualizarLivros(@RequestBody List<Livro> livros) {
-		return livroService.gravarLivros(livros);
+
+	@PutMapping(value = "/livros/{id}", produces = "application/json")
+	public @ResponseBody Livro atualizarLivros(@PathVariable Long id, @RequestBody Livro livro) {
+		livro.setId(id);
+		return livroService.gravarLivro(livro);
 	}
 	
-	//TODO - verificar
 	@DeleteMapping(value = "/livros/{id}", produces = "application/json")
-	public Livro deletarLivro(@RequestParam Long id) {
+	public @ResponseBody Livro deletarLivro(@PathVariable Long id) {
 		return livroService.deletarLivro(id);
 	}
 	

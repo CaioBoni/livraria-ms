@@ -31,6 +31,13 @@ public class Livro {
 		return livro;
 	}
 	
+	public Livro(Livro liv) {
+		super();
+		this.id = liv.getId();
+		this.nome = liv.getNome();
+		this.comentarios = liv.getComentarios();
+	}
+	
 	public Long getId() {
 		return id;
 	}
