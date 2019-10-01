@@ -25,7 +25,7 @@ public class CartaoController {
     }
 	
 	@PostMapping(value="/saida", produces = "application/json")
-    public ResponseEntity<?> saidaEntrada(@RequestBody Object object) {
+    public ResponseEntity<?> gravarSaida(@RequestBody Object object) {
     	Cartao cartao = new Cartao();
     	cartao.setId((new Random()).nextLong());
     	cartao.setOperacao(Cartao.OperacaoCartao.SAIDA);

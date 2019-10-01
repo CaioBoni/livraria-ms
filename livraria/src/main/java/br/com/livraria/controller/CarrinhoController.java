@@ -69,7 +69,7 @@ public class CarrinhoController {
 	}
 
 	@PutMapping(value = "/carrinhos/{id}", produces = "application/json")
-	public @ResponseBody ResponseEntity<?> atualizarCarrinhos(@PathVariable Long id, @RequestBody Carrinho carrinho,
+	public @ResponseBody ResponseEntity<?> atualizarCarrinho(@PathVariable Long id, @RequestBody Carrinho carrinho,
 			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		carrinho.setId(id);
 		if (validadorTokenService.validarToken(token)) {

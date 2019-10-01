@@ -20,12 +20,12 @@ public class AuditoriaController {
 	
 	@Autowired AuditoriaService auditoriaService;
 
-	@GetMapping(value="/{id}")
-    public ResponseEntity<?> greeting(@PathVariable Long id) {
-		return new ResponseEntity<>(auditoriaService.retornarAuditoria(id), HttpStatus.OK);
+	@GetMapping(path = "/api/{id}")
+    public ResponseEntity<?> buscarAuditoria(@PathVariable String id) {
+		return new ResponseEntity<>(auditoriaService.retornarAuditoria(Long.valueOf(id)), HttpStatus.OK);
     }
     
-    @PostMapping(value="/")
+    @PostMapping(path="/api")
     public ResponseEntity<?> gravarAuditoria(@RequestBody Object object) {
     	Auditoria auditoria = new Auditoria();
     	auditoria.setObjeto(object);
@@ -33,9 +33,9 @@ public class AuditoriaController {
     	return new ResponseEntity<>(auditoriaService.gravarAuditoria(auditoria), HttpStatus.OK);
     }
     
-    @PutMapping(value="/{id}")
-    public ResponseEntity<?> gravarAuditoria(@PathVariable Long id) {
-    	return new ResponseEntity<>(auditoriaService.retornarAuditoria(id), HttpStatus.OK);
+    @PutMapping(path="/api/{id}")
+    public ResponseEntity<?> atualizarAuditoria(@PathVariable String id) {
+    	return new ResponseEntity<>(auditoriaService.retornarAuditoria(Long.valueOf(id)), HttpStatus.OK);
     }
     
 }

@@ -57,7 +57,7 @@ public class LivroController {
 	}
 
 	@PutMapping(value = "/livros/{id}", produces = "application/json")
-	public @ResponseBody ResponseEntity<Livro> atualizarLivros(@PathVariable Long id, @RequestBody Livro livro,
+	public @ResponseBody ResponseEntity<Livro> atualizarLivro(@PathVariable Long id, @RequestBody Livro livro,
 			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		livro.setId(id);
 		if (validadorTokenService.validarToken(token)) {
