@@ -1,5 +1,6 @@
 package br.com.livraria.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Carrinho {
@@ -7,6 +8,16 @@ public class Carrinho {
 	private Long id;
 	private List<Livro> livros;
 	private String user;
+	
+	public Carrinho(){
+		super();
+		this.livros = new ArrayList<>();
+	}
+	
+	public Carrinho(Long id){
+		super();
+		this.id = id;
+	}
 	
 	public Long getId() {
 		return id;

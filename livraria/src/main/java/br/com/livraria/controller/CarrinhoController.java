@@ -1,5 +1,7 @@
 package br.com.livraria.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,60 +19,70 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.livraria.entity.Livro;
-import br.com.livraria.service.LivroService;
+import br.com.livraria.entity.Carrinho;
+import br.com.livraria.service.CarrinhoService;
 import br.com.livraria.service.ValidadorTokenService;
 
 @RestController
-public class LivroController {
+public class CarrinhoController {
 	
-	@Autowired LivroService livroService;
 	@Autowired ValidadorTokenService validadorTokenService;
+	@Autowired CarrinhoService carrinhoService;
 	
-	@GetMapping(value = "/livros", produces = "application/json")
-	public @ResponseBody ResponseEntity<List<Livro>> buscarLivros(@RequestBody(required = false) Livro livro, 
+	@GetMapping(value = "/carrinhos", produces = "application/json")
+	public @ResponseBody ResponseEntity<List<Carrinho>> buscarCarrinhos(@RequestBody(required = false) Carrinho carrinho, 
 			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		if (validadorTokenService.validarToken(token)) {
-			return new ResponseEntity<>(livroService.buscarLivros(livro != null ? livro : new Livro()), header("Retornado com sucesso"), HttpStatus.OK);
+			return new ResponseEntity<>(new ArrayList<Carrinho>(), header("Retornado com sucesso"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
 	
-	@GetMapping(value = "/livros/{id}", produces = "application/json")
-	public @ResponseBody ResponseEntity<List<Livro>> buscarLivro(@PathVariable Long id, 
+	@GetMapping(value = "/carrinhos/{id}", produces = "application/json")
+	public @ResponseBody ResponseEntity<Carrinho> buscarCarrinho(@PathVariable Long id, 
 			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		if (validadorTokenService.validarToken(token)) {
-			Livro livro = new Livro(id);
-			return new ResponseEntity<>(livroService.buscarLivros(livro), header("Retornado com sucesso"), HttpStatus.OK);
+			Carrinho carrinho = new Carrinho(id);
+			return new ResponseEntity<>(carrinho, header("Retornado com sucesso"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
 
-	@PostMapping(value = "/livros", produces = "application/json")
-	public @ResponseBody ResponseEntity<List<Livro>> cadastrarLivros(
+	@PostMapping(value = "/carrinhos", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> cadastrarCarrinhos(
 			@RequestHeader(required = false, defaultValue = "not-valid") String token,
-			@RequestBody Livro ...livros) {
+			@RequestBody Carrinho ...carrinhos) {
 		if (validadorTokenService.validarToken(token)) {
-			return new ResponseEntity<>(livroService.gravarLivros(livros), header("Retornado com sucesso"), HttpStatus.OK);
-		}
-		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
-	}
-
-	@PutMapping(value = "/livros/{id}", produces = "application/json")
-	public @ResponseBody ResponseEntity<Livro> atualizarLivros(@PathVariable Long id, @RequestBody Livro livro,
-			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
-		livro.setId(id);
-		if (validadorTokenService.validarToken(token)) {
-			return new ResponseEntity<>(livroService.gravarLivro(livro), header("Retornado com sucesso"), HttpStatus.OK);
+			return new ResponseEntity<>(Arrays.asList(carrinhos), header("Retornado com sucesso"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
 	
-	@DeleteMapping(value = "/livros/{id}", produces = "application/json")
-	public @ResponseBody ResponseEntity<Livro> deletarLivro(@PathVariable Long id,
+	@PostMapping(value = "/carrinhos/{id}/pagamento", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> registrarPagamento(
+			@RequestHeader(required = false, defaultValue = "not-valid") String token,
+			@RequestBody Carrinho carrinho) {
+		if (validadorTokenService.validarToken(token)) {
+			return carrinhoService.registrarPagamento(carrinho);
+		}
+		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
+	}
+
+	@PutMapping(value = "/carrinhos/{id}", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> atualizarCarrinhos(@PathVariable Long id, @RequestBody Carrinho carrinho,
+			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
+		carrinho.setId(id);
+		if (validadorTokenService.validarToken(token)) {
+			return new ResponseEntity<>(carrinho, header("Retornado com sucesso"), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
+	}
+	
+	@DeleteMapping(value = "/carrinhos/{id}", produces = "application/json")
+	public @ResponseBody ResponseEntity<?> deletarCarrinho(@PathVariable Long id,
 			@RequestHeader(required = false, defaultValue = "not-valid") String token) {
 		if (validadorTokenService.validarToken(token)) {
-			return new ResponseEntity<>(livroService.deletarLivro(id), header("Retornado com sucesso"), HttpStatus.OK);
+			return new ResponseEntity<>(new Carrinho(), header("Retornado com sucesso"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(header("Não autorizado"), HttpStatus.UNAUTHORIZED);
 	}
